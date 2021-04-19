@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637543778793980018
-    m_Hash: 507045869
+      ticks: 637544445201788528
+    m_Hash: 730675138
   m_LockFileStatus:
     m_FilePath: E:/Coding/Unity/Beat Blaster/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637543778895957708
-    m_Hash: 266156914
+      ticks: 637544445201968532
+    m_Hash: 4045048986
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -22,6 +22,57 @@ m_LocalPackages:
 m_ProjectPath: E:/Coding/Unity/Beat Blaster/Packages
 m_EditorVersion: 2021.1.3f1 (4bef613afd59)
 m_ResolvedPackages:
+- packageId: com.h8man.2d.navmeshplus@https://github.com/h8man/NavMeshPlus.git
+  testable: 0
+  isDirectDependency: 1
+  version: 0.1.0
+  source: 5
+  resolvedPath: E:\Coding\Unity\Beat Blaster\Library\PackageCache\com.h8man.2d.navmeshplus@b052f44f4d
+  assetPath: Packages/com.h8man.2d.navmeshplus
+  name: com.h8man.2d.navmeshplus
+  displayName: NavMeshPlus
+  author:
+    name: 
+    email: 
+    url: 
+  category: 2D
+  type: 
+  description: NavMesh building components provide you with ability to create navigation
+    meshes that are generated automatically from your Scene geometry, which allows
+    characters to move intelligently around the game world.
+  status: 4
+  errors: []
+  versions:
+    all: []
+    compatible: []
+    verified: 
+  dependencies: []
+  resolvedDependencies: []
+  keywords:
+  - 2d
+  registry:
+    id: 
+    name: 
+    url: 
+    scopes: []
+    isDefault: 0
+    capabilities: 0
+  hasRegistry: 0
+  hideInEditor: 1
+  entitlements:
+    isAllowed: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 
+    nextVersion: 
 - packageId: com.unity.2d.animation@6.0.1
   testable: 0
   isDirectDependency: 1

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -8,6 +9,8 @@ public class Player : MonoBehaviour {
 
     public ParticleSystem deathEffect;
 
+    public int score;
+    public TextMeshProUGUI scoreText;
     public float jumpPower = 1f;
     public float laserTime = 0.1f;
     public float laserCooldown = 1f;
@@ -18,6 +21,7 @@ public class Player : MonoBehaviour {
     bool onCooldown = false;
     bool jump = false;
     bool fire = false;
+    RaycastHit2D hit;
 
     void Start() {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
@@ -32,8 +36,19 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
+        score = PlayerVars.score;
+        scoreText.SetText("" + score);
+
         if (Input.GetMouseButtonDown(1)) jump = true;
-        if (Input.GetMouseButtonDown(0)) fire = true;
+        if (Input.GetMouseButtonDown(0)) {
+            fire = true;
+            hit = Physics2D.Raycast(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position, 30f, LayerMask.GetMask("Wall", "Enemy"));
+            Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            lineRenderer.SetPosition(0, transform.position);
+            // Debug.Log(transform.position);
+            lineRenderer.SetPosition(1, hit.point);
+            lineRenderer.enabled = true;
+        }
     }
 
     void FixedUpdate() {
@@ -49,6 +64,7 @@ public class Player : MonoBehaviour {
             // Debug.Log("Jumping!");
             // Apply reversed clamped vector of mouse position as force to rb
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos -= transform.position;
             mousePos.z = 0f;
             Vector3 jumpDir = mousePos.normalized * -1;
             // Debug.Log(jumpDir);
@@ -57,23 +73,25 @@ public class Player : MonoBehaviour {
             jump = false;
         } else if (fire && !onCooldown) {
             laserTimer -= Time.deltaTime;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition), 30f, LayerMask.GetMask("Wall"));
-            // Debug.Log(hit.point);
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, hit.point);
-            lineRenderer.enabled = true;
+
             if (laserTimer <= 0) {
                 fire = false;
                 lineRenderer.enabled = false;
                 laserTimer = laserTime;
                 onCooldown = true;
             }
+
+            if (hit.transform.gameObject != null) {
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+                    hit.transform.gameObject.GetComponent<Enemy>().Destruct();
+                }
+            }
         }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
         Debug.Log(col.gameObject.name + " collided!");
-        if (col.gameObject.layer == 6) {
+        if (col.gameObject.layer == 6 || col.gameObject.layer == 7) {
             Destroy(gameObject);
             // Play Death Particles
             deathEffect.transform.position = rb.transform.position;
