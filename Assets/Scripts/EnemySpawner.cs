@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour {
         timer -= Time.deltaTime;
 
         if (timer <= 0) {
-            Instantiate(enemy, spawnSpots[Random.Range(0, spawnSpots.Count - 1)]);
+            Instantiate(enemy, spawnSpots[Random.Range(0, spawnSpots.Count)]);
             timer = rate;
         }
     }

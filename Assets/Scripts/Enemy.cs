@@ -8,10 +8,12 @@ public class Enemy : MonoBehaviour {
     Transform player;
 
     public ParticleSystem death;
+    public AudioSource killSound;
 
     void Start() {
         if (GameObject.Find("Player") != null) player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        killSound = GameObject.Find("KillSound").GetComponent<AudioSource>();
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -29,10 +31,11 @@ public class Enemy : MonoBehaviour {
 
     public void Destruct() {
         if (gameObject.activeSelf) {
+            Debug.Log("Killed");
+            killSound.Play();
             Instantiate(death, transform.position, Quaternion.identity);
             PlayerVars.score++;
+            gameObject.SetActive(false);
         }
-        gameObject.SetActive(false);
-        // Destroy(gameObject);
     }
 }

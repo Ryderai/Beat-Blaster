@@ -8,6 +8,10 @@ public class Player : MonoBehaviour {
     LineRenderer lineRenderer;
 
     public ParticleSystem deathEffect;
+    public AudioSource laserSound;
+    public AudioSource jumpSound;
+    public AudioSource deathSound;
+    // public AudioSource killSound;
 
     public int score;
     public TextMeshProUGUI scoreText;
@@ -39,7 +43,14 @@ public class Player : MonoBehaviour {
         score = PlayerVars.score;
         scoreText.SetText("" + score);
 
-        if (Input.GetMouseButtonDown(1)) jump = true;
+        if (score > PlayerPrefs.GetInt("HighScore", 0)) {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
+
+        if (Input.GetMouseButtonDown(1)) {
+            jump = true;
+            jumpSound.Play();
+        }
         if (Input.GetMouseButtonDown(0)) {
             fire = true;
             hit = Physics2D.Raycast(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position, 30f, LayerMask.GetMask("Wall", "Enemy"));
@@ -48,6 +59,8 @@ public class Player : MonoBehaviour {
             // Debug.Log(transform.position);
             lineRenderer.SetPosition(1, hit.point);
             lineRenderer.enabled = true;
+
+            laserSound.Play();
         }
     }
 
@@ -84,14 +97,17 @@ public class Player : MonoBehaviour {
             if (hit.transform.gameObject != null) {
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
                     hit.transform.gameObject.GetComponent<Enemy>().Destruct();
+                    // if (!killSound.isPlaying) killSound.Play();
                 }
             }
         }
+        if (lineRenderer.enabled) lineRenderer.SetPosition(0, transform.position);
     }
 
     void OnCollisionEnter2D(Collision2D col) {
         Debug.Log(col.gameObject.name + " collided!");
         if (col.gameObject.layer == 6 || col.gameObject.layer == 7) {
+            deathSound.Play();
             Destroy(gameObject);
             // Play Death Particles
             deathEffect.transform.position = rb.transform.position;
