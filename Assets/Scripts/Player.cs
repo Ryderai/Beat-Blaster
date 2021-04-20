@@ -7,6 +7,8 @@ public class Player : MonoBehaviour {
     Rigidbody2D rb;
     LineRenderer lineRenderer;
 
+    public GameObject deathMenu;
+
     public ParticleSystem deathEffect;
     public AudioSource laserSound;
     public AudioSource jumpSound;
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour {
         laserTimer = laserTime;
         laserCooldownTimer = laserCooldown;
         lineRenderer.enabled = false;
+        PlayerVars.score = 0;
 
         deathEffect.Stop();
 
@@ -114,5 +117,9 @@ public class Player : MonoBehaviour {
             deathEffect.Play();
             // Lose Screen
         }
+    }
+
+    void OnDestroy() {
+        deathMenu.SetActive(true);
     }
 }
